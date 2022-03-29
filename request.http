@@ -23,11 +23,11 @@ GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
 
 ###
 
-GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
+GET http://localhost:3000/users/text
 
 ###
 
-GET http://localhost:3000/cards
+GET http://localhost:3000/404
 
 ###
 
@@ -36,3 +36,7 @@ DELETE http://localhost:3000/cards/6242da602fbb4e5ba5ec8ae6/likes
 ###
 
 PUT http://localhost:3000/cards/62423a7969c855e0316eb762/likes
+
+###
+
+PATCH http://localhost:3000/404

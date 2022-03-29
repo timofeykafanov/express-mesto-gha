@@ -1,3 +1,5 @@
+const ErrorNotFound = require('../errors/NotFoundError');
+
 const User = require('../models/user');
 
 const getUsers = (req, res) => {
@@ -8,12 +10,18 @@ const getUsers = (req, res) => {
 
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
+    .orFail(() => {
+      throw new ErrorNotFound('Пользователь не найден');
+    })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
       if (err.name === 'CastError') {
-        return res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
+        return res.status(400).send({ message: 'Пользователь не найден' });
       }
-      return res.status(500).send({ message: 'Ошибка на стороне сервера' });
+      if (err.statusCode === 404) {
+        return res.status(404).send({ message: 'Пользователь не найден' });
+      }
+      return res.status(500).send(err);
     });
 };
 

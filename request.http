@@ -12,14 +12,14 @@ POST http://localhost:3000/users
 Content-Type: application/json
 
 {
-  "name": "Новый пользователь",
+  "name": "Новый",
   "about": "Админ",
   "avatar": "https://arte1.ru/images/detailed/4/23608.jpg"
 }
 
 ###
 
-GET http://localhost:3000/users
+GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
 
 ###
 
@@ -39,9 +39,10 @@ PUT http://localhost:3000/cards/62423a7969c855e0316eb762/likes
 
 ###
 
-PATCH http://localhost:3000/users/me/avatar
+PATCH http://localhost:3000/users/me
 Content-Type: application/json
 
 {
-  "avatar": "https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg",
+  "name": "О",
+  "about": "А"
 }

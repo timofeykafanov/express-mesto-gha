@@ -39,7 +39,7 @@ const updateUser = (req, res) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({ message: 'Переданы некорректные данные' });
       }
-      if (err.name === 'CastError') {
+      if (err.statusCode === 404) {
         return res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       }
       return res.status(500).send({ message: 'Ошибка на стороне сервера' });

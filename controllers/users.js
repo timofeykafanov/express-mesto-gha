@@ -1,4 +1,4 @@
-const ErrorNotFound = require('../errors/NotFoundError');
+const NotFoundError = require('../errors/NotFoundError');
 
 const User = require('../models/user');
 
@@ -11,15 +11,15 @@ const getUsers = (req, res) => {
 const getUserById = (req, res) => {
   User.findById(req.params.userId)
     .orFail(() => {
-      throw new ErrorNotFound();
+      throw new NotFoundError();
     })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
       if (err.statusCode === 404) {
-        return res.status(404).send({ message: 'Пользователь не найден' });
+        return res.status(404).send({ message: 'Пользователя не существует' });
       }
       if (err.name === 'CastError') {
-        return res.status(400).send({ message: 'Пользователь не найден' });
+        return res.status(400).send({ message: 'Переданы некорректные данные' });
       }
       return res.status(500).send({ message: 'Ошибка на стороне сервера' });
     });
@@ -43,7 +43,7 @@ const updateUser = (req, res) => {
 
   User.findByIdAndUpdate(req.user._id, { name, about }, { runValidators: true, new: true })
     .orFail(() => {
-      throw new ErrorNotFound();
+      throw new NotFoundError();
     })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
@@ -53,7 +53,7 @@ const updateUser = (req, res) => {
       if (err.statusCode === 404) {
         return res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       }
-      return res.send(err);
+      return res.status(500).send({ message: 'Ошибка на стороне сервера' });
     });
 };
 
@@ -62,7 +62,7 @@ const updateAvatar = (req, res) => {
 
   User.findByIdAndUpdate(req.user._id, { avatar }, { runValidators: true, new: true })
     .orFail(() => {
-      throw new ErrorNotFound();
+      throw new NotFoundError();
     })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {

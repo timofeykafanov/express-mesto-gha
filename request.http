@@ -1,0 +1,38 @@
+POST http://localhost:3000/cards
+Content-Type: application/json
+
+{
+  "name": "Тестовая карточка",
+  "link": "https://w-dog.ru/wallpapers/0/62/349856802100204/zolotoj-bereg-okean-avstraliya-oteli-more-gorod.jpg"
+}
+
+###
+
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "name": "Новый пользователь",
+  "about": "Админ",
+  "avatar": "https://arte1.ru/images/detailed/4/23608.jpg"
+}
+
+###
+
+GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
+
+###
+
+GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
+
+###
+
+GET http://localhost:3000/cards
+
+###
+
+DELETE http://localhost:3000/cards/6242da602fbb4e5ba5ec8ae6/likes
+
+###
+
+PUT http://localhost:3000/cards/62423a7969c855e0316eb762/likes

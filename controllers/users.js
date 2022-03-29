@@ -41,10 +41,10 @@ const createUser = (req, res) => {
 const updateUser = (req, res) => {
   const { name, about } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { name, about })
+  User.findByIdAndUpdate(req.user._id, { name, about }, { runValidators: true, new: true })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.statusCode === 400) {
         return res.status(400).send({ message: 'Переданы некорректные данные' });
       }
       if (err.statusCode === 404) {
@@ -57,13 +57,13 @@ const updateUser = (req, res) => {
 const updateAvatar = (req, res) => {
   const { avatar } = req.body;
 
-  User.findByIdAndUpdate(req.user._id, { avatar })
+  User.findByIdAndUpdate(req.user._id, { avatar }, { runValidators: true, new: true })
     .then((user) => res.status(200).send({ data: user }))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.statusCode === 400) {
         return res.status(400).send({ message: 'Переданы некорректные данные' });
       }
-      if (err.name === 'CastError') {
+      if (err.statusCode === 404) {
         return res.status(404).send({ message: 'Запрашиваемый пользователь не найден' });
       }
       return res.status(500).send({ message: 'Ошибка на стороне сервера' });

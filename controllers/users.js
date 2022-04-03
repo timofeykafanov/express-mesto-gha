@@ -1,3 +1,6 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+
 const NotFoundError = require('../errors/NotFoundError');
 
 const User = require('../models/user');
@@ -26,10 +29,25 @@ const getUserById = (req, res) => {
 };
 
 const createUser = (req, res) => {
-  const { name, about, avatar } = req.body;
+  const {
+    name,
+    about,
+    avatar,
+    email,
+    password,
+  } = req.body;
 
-  User.create({ name, about, avatar })
-    .then((user) => res.status(200).send(user))
+  bcrypt.hash(password, 10)
+    .then((hash) => {
+      User.create({
+        name,
+        about,
+        avatar,
+        email,
+        password: hash,
+      })
+        .then((user) => res.status(200).send(user));
+    })
     .catch((err) => {
       if (err.name === 'ValidationError') {
         return res.status(400).send({ message: 'Переданы некорректные данные' });
@@ -76,10 +94,34 @@ const updateAvatar = (req, res) => {
     });
 };
 
+const login = (req, res) => {
+  const { email, password } = req.body;
+
+  User.findOne({ email })
+    .select('+password')
+    .then((user) => {
+      if (!user) {
+        return res.status(401).send({ message: 'Неправильный логин или пароль' });
+      }
+      return bcrypt.compare(password, user.password)
+        .then((matched) => {
+          if (!matched) {
+            return res.status(401).send({ message: 'Неправильный логин или пароль' });
+          }
+          const token = jwt.sign({ _id: user._id }, 'super-strong-secret', { expiresIn: '7d' });
+          return res.status(200).send({ token });
+        });
+    })
+    .catch(() => {
+      res.status(500).send({ message: 'Ошибка на стороне сервера' });
+    });
+};
+
 module.exports = {
   getUsers,
   getUserById,
   createUser,
   updateUser,
   updateAvatar,
+  login,
 };

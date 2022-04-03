@@ -28,7 +28,11 @@ const deleteCard = (req, res) => {
       throw new NotFoundError();
     })
     .then((card) => {
-      res.status(200).send({ data: card });
+      if (req.user._id !== card.owner.toString()) {
+        res.send({ message: 'Нельзя удалить карточку другого пользователя' });
+      } else {
+        res.status(200).send({ data: card });
+      }
     })
     .catch((err) => {
       if (err.statusCode === 404) {

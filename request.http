@@ -19,11 +19,9 @@ Content-Type: application/json
 
 ###
 
-GET http://localhost:3000/users/62422c7263d13dfc6a62dd19
+GET http://localhost:3000/users/text
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjRhZjc4ZjBjNDdhOGE1ZGU2NTc1YzMiLCJpYXQiOjE2NDkwODQzMTMsImV4cCI6MTY0OTY4OTExM30.QaL6raa3c2vBXU5e3IMTbbBQ89ecBWEhtzlIP0R9Q2s
 
-###
-
-GET http://localhost:3000/users/61eade4c6d5acf558c42d9b8
 
 ###
 
@@ -46,3 +44,14 @@ Content-Type: application/json
   "name": "О",
   "about": "А"
 }
+
+###
+
+POST http://localhost:3000/signin
+Content-Type: application/json
+
+{
+  "email": "timofey.kafanov@gmail.com",
+  "password": "12345678"
+}
+

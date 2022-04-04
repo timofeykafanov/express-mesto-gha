@@ -14,19 +14,33 @@ const getUsers = (req, res, next) => {
     .catch(next);
 };
 
+const getUserInfo = (req, res, next) => {
+  User.findById(req.user._id)
+    .orFail(() => {
+      throw new NotFoundError('Пользователь с таким id не найден');
+    })
+    .then((user) => res.status(200).send(user))
+    .catch((err) => {
+      if (err.name === 'ValidationError') {
+        next(new DataError('Неверный запрос или данные'));
+      } else {
+        next(err);
+      }
+    });
+};
+
 const getUserById = (req, res, next) => {
   User.findById(req.params.userId)
     .orFail(() => {
       throw new NotFoundError('Пользователь с таким id не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError' || err.name === 'CastError') {
         next(new DataError('Неверный запрос или данные'));
       } else {
         next(err);
       }
-      return res.status(500).send({ message: 'Ошибка на стороне сервера' });
     });
 };
 
@@ -52,7 +66,15 @@ const createUser = (req, res, next) => {
           email,
           password: hash,
         }))
-        .then((newUser) => res.status(200).send(newUser));
+        .then((newUser) => {
+          const obj = {};
+          obj.name = newUser.name;
+          obj.about = newUser.about;
+          obj.avatar = newUser.avatar;
+          obj.email = newUser.email;
+          obj._id = newUser._id;
+          res.status(200).send(obj);
+        });
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -121,6 +143,7 @@ const login = (req, res, next) => {
 module.exports = {
   getUsers,
   getUserById,
+  getUserInfo,
   createUser,
   updateUser,
   updateAvatar,

@@ -92,7 +92,7 @@ const updateUser = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Пользователь не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(new DataError('Переданы некорректные данные'));
@@ -109,7 +109,7 @@ const updateAvatar = (req, res, next) => {
     .orFail(() => {
       throw new NotFoundError('Пользователь не найден');
     })
-    .then((user) => res.status(200).send({ data: user }))
+    .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.statusCode === 400) {
         next(new DataError('Переданы некорректные данные'));

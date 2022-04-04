@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const { celebrate, Joi } = require('celebrate');
+const { celebrate, Joi, errors } = require('celebrate');
 
 const auth = require('./middlewares/auth');
 
@@ -40,10 +40,13 @@ app.post('/signup', celebrate({
   }),
 }), createUser);
 
-app.use((err, req, res) => {
+app.use(errors());
+
+app.use((err, req, res, next) => {
   res
     .status(err.statusCode || 500)
     .send({ message: err.message });
+  next();
 });
 
 app.use((req, res) => {

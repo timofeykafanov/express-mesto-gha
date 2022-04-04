@@ -25,6 +25,12 @@ app.use('/cards', auth, require('./routes/cards'));
 app.post('/signin', login);
 app.post('/signup', createUser);
 
+app.use((err, req, res) => {
+  res
+    .status(err.statusCode || 500)
+    .send({ message: err.message });
+});
+
 app.use((req, res) => {
   res.status(404).send({ message: 'Такой страницы не существует' });
 });

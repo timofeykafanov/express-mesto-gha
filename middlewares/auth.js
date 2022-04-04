@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const handleAuthError = (res) => {
   res
-    .status(401)
+    .status(403)
     .send({ message: 'Необходима авторизация' });
 };
 
@@ -26,5 +26,5 @@ module.exports = (req, res, next) => {
 
   req.user = payload;
 
-  next();
+  return next();
 };

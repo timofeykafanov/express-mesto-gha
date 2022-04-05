@@ -30,10 +30,11 @@ const deleteCard = (req, res, next) => {
       throw new NotFoundError('Карточка не найдена');
     })
     .then((card) => {
-      if (req.user._id !== card.owner.toString()) {
+      if (!card.owner.equals(req.user._id)) {
         return next(new RightsError('Нельзя удалить карточку другого пользователя'));
       }
-      return res.status(200).send(card);
+      return card.remove()
+        .then(() => res.status(200).send({ message: 'Карточка удалена' }));
     })
     .catch(next);
 };

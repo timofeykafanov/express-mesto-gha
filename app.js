@@ -8,6 +8,7 @@ const {
   createUser,
   login,
 } = require('./controllers/users');
+const NotFoundError = require('./errors/NotFoundError');
 
 const { PORT = 3000 } = process.env;
 
@@ -42,13 +43,13 @@ app.post('/signup', celebrate({
 
 app.use(errors());
 
+app.use(auth, (req, res, next) => {
+  next(new NotFoundError('Такой страницы не существует'));
+});
+
 app.use((err, req, res, next) => {
   res
     .status(err.statusCode || 500)
     .send({ message: err.message });
   next();
-});
-
-app.use((req, res) => {
-  res.status(404).send({ message: 'Такой страницы не существует' });
 });

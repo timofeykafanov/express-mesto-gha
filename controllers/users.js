@@ -21,7 +21,7 @@ const getUserInfo = (req, res, next) => {
     })
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === 'CastError') {
         next(new DataError('Неверный запрос или данные'));
       } else {
         next(err);

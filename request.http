@@ -19,9 +19,13 @@ Content-Type: application/json
 
 ###
 
-PATCH http://localhost:3000/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjRhZjc4ZjBjNDdhOGE1ZGU2NTc1YzMiLCJpYXQiOjE2NDkwODYzNzQsImV4cCI6MTY0OTY5MTE3NH0.G3-uatXhUxgrkX5GVYRsJMcaDd5o7tWae3wbB1w1cro
+GET  http://localhost:3000/404
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MjRhZjc4ZjBjNDdhOGE1ZGU2NTc1YzMiLCJpYXQiOjE2NDkxNDk4MzMsImV4cCI6MTY0OTc1NDYzM30.YhyfkOGVBNugSGOWLzb0fob9PZ1nrFnTld5CCr8vpFc
 
+# {
+#   "avatar": "http://2-domains.ru"
+# }
 
 ###
 
